@@ -1,12 +1,11 @@
-import { useNavigation } from '@react-navigation/core';
 import React, { useRef, useState } from 'react';
-import { Alert, TextInput } from 'react-native';
+import { useNavigation } from '@react-navigation/core';
+import { TextInput } from 'react-native';
 
 import { Background } from '../../components/Background';
 import { Card } from '../../components/Card';
 
 import { useRepositories } from '../../hooks/useRepositories';
-import { api } from '../../services/api';
 
 import {
     Container,
@@ -28,15 +27,13 @@ export function Dashboard() {
     const { addRepository, repositories } = useRepositories();
 
     async function handleAddRepository() {
-        if (inputText) {
-            addRepository(inputText);
-            inputRef.current?.blur();
-            setInputText('');
-        }
+        addRepository(inputText);
+        setInputText('');
+        inputRef.current?.blur();
     }
 
     function handleRepositoryPageNavigation(id: number) {
-        navigate('Repository', { id });
+        navigate('Repository', { repositoryId: id });
     }
 
     return (

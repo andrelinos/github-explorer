@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useWindowDimensions, ViewProps } from 'react-native';
 import {
-  Easing,
+    Easing,
     useAnimatedGestureHandler,
     useAnimatedStyle,
     useSharedValue,
@@ -22,41 +22,18 @@ export function CardAnimation({ children, ...rest }: CardAnimationProps) {
 
     const animatedStyle = useAnimatedStyle(() => {
         return {
-            transform: [
-                { translateX: cardOpacity.value, translateY: cardOffset.value }
-            ]
+            opacity: cardOpacity.value,
+            transform: [{ translateX: cardOffset.value }]
         };
     });
 
-    const onGestureEvent = useAnimatedGestureHandler({
-      onStart(_event, ctx: any) {
-          ctx.positionX = cardOpacity.value;
-          ctx.positionY = cardOffset.value;
-      },
-      onActive(event, ctx: any) {
-          cardOpacity.value = ctx.cardOpacity + event.translationX;
-          cardOffset.value = ctx.cardOffset + event.translationY;
-      },
-      onEnd() {
-          cardOpacity.value = withTiming(0);
-          cardOffset.value = withTiming(0);
-      }
-  });
-
     useEffect(() => {
-        cardOffset.value = withTiming(0, {
-          duration: 500,
-          easing: Easing.out(Easing.exp)
-        })
-
-        /**
-         * TODO - setup cardOpacity.value and cardOffset.value with
-         * withTiming()
-         */
+        cardOpacity.value = withTiming(1, { duration: 1000 });
+        cardOffset.value = withTiming(0, { duration: 1000 });
     }, []);
 
     return (
-        <AnimationContainer {...rest} style={animatedStyle} >
+        <AnimationContainer {...rest} style={animatedStyle}>
             {children}
         </AnimationContainer>
     );
